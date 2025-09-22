@@ -1,20 +1,23 @@
 package com.cooksys.social_media.dtos;
 
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
 
+
 @NoArgsConstructor
 @Getter
 @Setter
-public class HashTagDto {
+public class UserResponseDto {
 
-    private String label;
+    private String username;
 
-    private Timestamp firstUsed;
+    private ProfileDto profileDto;
 
-    private Timestamp lastUsed;
+    private Timestamp joined;
+
 
 }
