@@ -10,4 +10,10 @@ import lombok.Setter;
 @Setter
 public class TweetRequestDto {
 
+    private String content;
+
+    private CredentialsDto credentials;
+
+
+
 }
