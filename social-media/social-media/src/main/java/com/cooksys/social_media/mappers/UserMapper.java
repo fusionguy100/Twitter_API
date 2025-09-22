@@ -1,4 +1,19 @@
 package com.cooksys.social_media.mappers;
 
-public class UserMapper {
+import com.cooksys.social_media.dtos.UserRequestDto;
+import com.cooksys.social_media.dtos.UserResponseDto;
+import com.cooksys.social_media.entities.User;
+import org.mapstruct.Mapper;
+
+import java.util.List;
+
+@Mapper(componentModel = "spring", uses = { ProfileMapper.class, CredentialsMapper.class, TweetMapper.class })
+public interface UserMapper {
+
+    UserResponseDto entityToDto(User entity);
+
+    List<UserResponseDto> entitiesToDtos(List<User> entities);
+
+    User dtoToEntity(UserRequestDto dto);
+
 }
