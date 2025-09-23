@@ -1,11 +1,11 @@
 package com.cooksys.social_media.dtos;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class CredentialsDto {
 

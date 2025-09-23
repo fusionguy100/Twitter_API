@@ -1,13 +1,13 @@
 package com.cooksys.social_media.dtos;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Timestamp;
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class UserResponseDto {
     private String username;
 

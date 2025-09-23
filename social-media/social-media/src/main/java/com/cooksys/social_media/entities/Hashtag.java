@@ -1,11 +1,10 @@
 package com.cooksys.social_media.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -19,7 +18,10 @@ public class Hashtag {
     private Long id;
 
     private String label;
+    @CreationTimestamp
+    @Column(updatable = false)
     private Timestamp firstUsed;
+    @UpdateTimestamp
     private Timestamp lastUsed;
 
     @ManyToMany(mappedBy = "hashtags")

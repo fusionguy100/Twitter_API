@@ -4,7 +4,10 @@ import com.cooksys.social_media.entities.embeddables.Credentials;
 import com.cooksys.social_media.entities.embeddables.Profile;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -14,6 +17,8 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(exclude = {"followers", "following"})
+@ToString(exclude = {"followers", "following"})
 public class User {
 
     @Id
@@ -24,6 +29,8 @@ public class User {
     @Embedded
     Credentials credentials;
     private boolean deleted = false;
+    @CreationTimestamp
+    @Column(updatable = false)
     private Timestamp joined;
 
     @ManyToMany //user THIS user follows, owning side; writes followers_following roles)

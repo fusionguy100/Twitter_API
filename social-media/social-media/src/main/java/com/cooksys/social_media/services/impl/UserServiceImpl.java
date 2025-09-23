@@ -12,14 +12,18 @@ import com.cooksys.social_media.mappers.UserMapper;
 import com.cooksys.social_media.respositories.TweetRepository;
 import com.cooksys.social_media.respositories.UserRepository;
 import com.cooksys.social_media.services.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -56,7 +60,10 @@ public class UserServiceImpl implements UserService {
              user.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
              return userMapper.entityToDto(userRepository.save(user));
         }
-        return userMapper.entityToDto(userRepository.save(userMapper.dtoToEntity(userRequestDto)));
+        User user = userRepository.save(userMapper.dtoToEntity(userRequestDto));
+
+        return userMapper.entityToDto(user);
+//        return userMapper.entityToDto(userRepository.save(userMapper.dtoToEntity(userRequestDto)));
     }
 
     @Override
@@ -79,15 +86,18 @@ public class UserServiceImpl implements UserService {
                 || credentials.getPassword() == null || credentials.getPassword().isBlank()) {
             throw new BadRequestException("Username and password are required");
         }
-        if (profile == null || profile.getEmail() == null || profile.getEmail().isBlank()) {
-            throw new BadRequestException("Email in profile is required");
+        if (profile == null) {
+            throw new BadRequestException("Profile is required");
         }
         User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentials.getUsername(),
                 credentials.getPassword());
         if (user == null || !user.getCredentials().getUsername().equals(username)) {
             throw new NotAuthorizedException("Invalid credentials");
         }
-        user.setProfile(profileMapper.dtoToEntity(userRequestDto.getProfile()));
+        if (profile.getPhone() != null) user.getProfile().setPhone(profile.getPhone());
+        if (profile.getEmail() != null) user.getProfile().setEmail(profile.getEmail());
+        if (profile.getFirstName() != null) user.getProfile().setFirstName(profile.getFirstName());
+        if (profile.getLastName() != null) user.getProfile().setLastName(profile.getLastName());
         return userMapper.entityToDto(userRepository.save(user));
 
     }
@@ -111,6 +121,9 @@ public class UserServiceImpl implements UserService {
     public void followUser(String username, CredentialsDto credentialsDto) {
         User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentialsDto.getUsername(),
                 credentialsDto.getPassword());
+//        log.info("Credentials: " + credentialsDto);
+//        log.info("User to follow: " + username);
+//        log.info("Current user: " + user);
         if (user == null) {
             throw new NotAuthorizedException("Invalid credentials");
         }
@@ -121,9 +134,10 @@ public class UserServiceImpl implements UserService {
         if (user.getFollowing().contains(userToFollow) || user.getCredentials().getUsername().equals(username)) {
             throw new BadRequestException("You are already following this user or trying to follow yourself");
         }
+//        log.info(username + " follows " + user.getFollowing());
         user.getFollowing().add(userToFollow);
-        userToFollow.getFollowers().add(user);
-        userRepository.save(user);
+//        userToFollow.getFollowers().add(user);
+        log.info("Saved User after following" + userRepository.saveAndFlush(user));
     }
 
     @Override
@@ -141,8 +155,8 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException("You are not following this user or trying to unfollow yourself");
         }
         user.getFollowing().remove(userToUnfollow);
-        userToUnfollow.getFollowers().remove(userToUnfollow);
-        userRepository.save(user);
+//        userToUnfollow.getFollowers().remove(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -187,7 +201,7 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("User not found");
         }
         User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
-        return userMapper.entitiesToDtos(user.getFollowers().stream().filter(u -> !u.isDeleted()).toList());
+        return userMapper.entitiesToDtos(new ArrayList<>(user.getFollowers()).stream().filter(u -> !u.isDeleted()).toList());
     }
 
     @Override
@@ -196,6 +210,6 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("User not found");
         }
         User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
-        return userMapper.entitiesToDtos(user.getFollowers().stream().filter(u -> !u.isDeleted()).toList());
+        return userMapper.entitiesToDtos(new ArrayList<>(user.getFollowing()).stream().filter(u -> !u.isDeleted()).toList());
     }
 }

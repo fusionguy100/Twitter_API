@@ -7,10 +7,12 @@ import com.cooksys.social_media.dtos.UserResponseDto;
 import com.cooksys.social_media.entities.User;
 import com.cooksys.social_media.services.UserService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
@@ -78,6 +80,7 @@ public class UserController {
 
     @GetMapping("/@{username}/following")
     public List<UserResponseDto> getUserFollowing(@PathVariable String username) {
+        log.info("Fetching followers for user: {}", username);
         return userService.getUserFollowing(username);
     }
 
