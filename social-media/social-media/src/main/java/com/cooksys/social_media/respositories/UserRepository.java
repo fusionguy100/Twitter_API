@@ -1,6 +1,5 @@
 package com.cooksys.social_media.respositories;
 
-import com.cooksys.social_media.dtos.CredentialsDto;
 import com.cooksys.social_media.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -21,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     boolean existsByCredentialsUsernameAndDeletedIsTrue(String username);
 
     User findByCredentialsUsernameAndDeletedIsFalse(String username);
+
+    Optional <User> findByCredentialsUsernameAndCredentialsPasswordAndDeletedIsFalse(String username, String password);
 }
