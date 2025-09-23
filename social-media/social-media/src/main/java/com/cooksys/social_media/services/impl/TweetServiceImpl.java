@@ -67,8 +67,11 @@ public class TweetServiceImpl implements TweetService {
         tweet.setPosted(new Timestamp(System.currentTimeMillis()));
         tweet = tweetRepository.saveAndFlush(tweet);
 
-        user.getTweets().add(tweet);
-        userRepository.saveAndFlush(user);
+        if (user.getTweets() != null) {
+            user.getTweets().add(tweet);
+            userRepository.saveAndFlush(user);
+        }
+
 
         for (String mentionedUsername : extractMentions(content)) {
             User mentioned = userRepository.findByCredentialsUsernameAndDeletedIsFalse(mentionedUsername);
@@ -96,6 +99,9 @@ public class TweetServiceImpl implements TweetService {
             tag.setLastUsed(now);
             tag = hashTagRepository.save(tag);
 
+            if (tweet.getHashtags() == null) {
+                tweet.setHashtags(new HashSet<>());
+            }
             tweet.getHashtags().add(tag);
         }
         tweet = tweetRepository.saveAndFlush(tweet);
@@ -130,61 +136,68 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public TweetResponseDto getTweetById(Long id) {
-        if (!tweetRepository.existsById(id) || tweetRepository.findById(id).get().isDeleted()) {
-            throw new NotFoundException("Tweet not found");
-        }
-        return tweetMapper.entityToDto(tweetRepository.findById(id).get());
+       Tweet tweet = tweetRepository.findById(id).orElseThrow(()-> new NotFoundException("Tweet not found"));
+       if(tweet.isDeleted()) throw new NotFoundException("Tweet not found");
+       return tweetMapper.entityToDto(tweet);
     }
 
     @Override
     public TweetResponseDto deleteTweetById(Long id, CredentialsDto credentialsDto) {
-        User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentialsDto.getUsername(),
-                credentialsDto.getPassword());
+        User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(
+                credentialsDto.getUsername(), credentialsDto.getPassword());
 
-        if (user == null) {
-            throw new NotAuthorizedException("Invalid credentials");
-        }
-        if (!userRepository.existsByCredentialsUsernameAndDeletedIsFalse(user.getCredentials().getUsername())) {
+        if (user == null) throw new NotAuthorizedException("Invalid credentials");
+        if (!userRepository.existsByCredentialsUsernameAndDeletedIsFalse(user.getCredentials().getUsername()))
             throw new NotFoundException("User not found");
-        }
+
         Tweet tweet = tweetRepository.findById(id)
                 .filter(t -> !t.isDeleted())
                 .orElseThrow(() -> new NotFoundException("Tweet not found"));
 
-        if(!tweet.getAuthor().equals(user)) {
+        if (!tweet.getAuthor().equals(user))
             throw new NotAuthorizedException("You are not the author of this tweet!");
-        }
-        TweetResponseDto tweetResponseDto = tweetMapper.entityToDto(tweet);
+
+
+        TweetResponseDto response = tweetMapper.entityToDto(tweet);
 
         tweet.setDeleted(true);
-
         tweetRepository.saveAndFlush(tweet);
 
-        return tweetResponseDto;
-
+        return response;
     }
 
     @Override
     public void likeTweetById(Long id, CredentialsDto credentialsDto) {
-        User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentialsDto.getUsername(),
-                credentialsDto.getPassword());
+        if (credentialsDto == null ||
+                credentialsDto.getUsername() == null ||
+                credentialsDto.getPassword() == null) {
+            throw new NotAuthorizedException("Credentials required.");
+        }
 
-        if (user == null) {
-            throw new NotAuthorizedException("Invalid credentials");
+        User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(
+                credentialsDto.getUsername().trim().toLowerCase(),
+                credentialsDto.getPassword()
+        );
+        if (user == null || user.isDeleted()) {
+            throw new NotAuthorizedException("Invalid credentials or inactive user.");
         }
-        if (!userRepository.existsByCredentialsUsernameAndDeletedIsFalse(user.getCredentials().getUsername())) {
-            throw new NotFoundException("User not found");
-        }
+
+
         Tweet tweet = tweetRepository.findById(id)
                 .filter(t -> !t.isDeleted())
                 .orElseThrow(() -> new NotFoundException("Tweet not found"));
 
+        if (user.getLikedTweets() == null) {
+            user.setLikedTweets(new java.util.HashSet<>());
+        }
 
-        user.getLikedTweets().add(tweet);
-        tweet.getLikedBy().add(user);
+        boolean alreadyLiked = user.getLikedTweets().stream()
+                .anyMatch(t -> t.getId() == tweet.getId());
+        if (!alreadyLiked) {
+            user.getLikedTweets().add(tweet);
+            userRepository.saveAndFlush(user);
+        }
 
-        userRepository.saveAndFlush(user);
-        tweetRepository.saveAndFlush(tweet);
 
     }
 
