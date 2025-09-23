@@ -22,46 +22,46 @@ public class TweetController {
     }
 
     @GetMapping("/{id}")
-    public TweetResponseDto getTweetById(@PathVariable String id) {
-        return tweetService.getTweetById();
+    public TweetResponseDto getTweetById(@PathVariable Long id) {
+        return tweetService.getTweetById(id);
     }
 
     @DeleteMapping("/{id}")
-    public TweetResponseDto deleteTweetById(@PathVariable String id,
+    public TweetResponseDto deleteTweetById(@PathVariable Long id,
                                             @RequestBody CredentialsDto credentialsDto) {
-        return tweetService.deleteTweetById(credentialsDto);
+        return tweetService.deleteTweetById(id, credentialsDto);
     }
 
     @PostMapping("/{id}/like")
-    public void likeTweetById(@PathVariable String id, @RequestBody CredentialsDto credentialsDto) {
-        tweetService.likeTweetById(credentialsDto);
+    public void likeTweetById(@PathVariable Long id, @RequestBody CredentialsDto credentialsDto) {
+        tweetService.likeTweetById(id, credentialsDto);
     }
 
     @PostMapping("/{id}/reply")
-    public TweetResponseDto replyToTweetById(@PathVariable String id,
+    public TweetResponseDto replyToTweetById(@PathVariable Long id,
                                    @RequestBody TweetRequestDto tweetRequestDto) {
-        return tweetService.replyToTweetById(tweetRequestDto);
+        return tweetService.replyToTweetById(id, tweetRequestDto);
     }
 
     @PostMapping("/{id}/repost")
-    public TweetResponseDto repostTweetById(@PathVariable String id,
+    public TweetResponseDto repostTweetById(@PathVariable Long id,
                                   @RequestBody CredentialsDto credentialsDto) {
-        return tweetService.repostTweetById(credentialsDto);
+        return tweetService.repostTweetById(id, credentialsDto);
     }
 
     @GetMapping("/{id}/tags")
-    public HashtagDto getTagsByTweetId(@PathVariable String id) {
-        return tweetService.getTagsByTweetId();
+    public HashtagDto getTagsByTweetId(@PathVariable Long id) {
+        return tweetService.getTagsByTweetId(id);
     }
 
     @GetMapping("/{id}/likes")
-    public UserResponseDto getLikesByTweetId(@PathVariable String id) {
-        return tweetService.getLikesByTweetId();
+    public UserResponseDto getLikesByTweetId(@PathVariable Long id) {
+        return tweetService.getLikesByTweetId(id);
     }
 
     @GetMapping("/{id}/context")
-    public ContextDto getContextByTweetId(@PathVariable String id) {
-        return tweetService.getContextByTweetId();
+    public ContextDto getContextByTweetId(@PathVariable Long id) {
+        return tweetService.getContextByTweetId(id);
     }
 
     @GetMapping("/{id}/replies")

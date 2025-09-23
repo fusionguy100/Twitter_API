@@ -7,19 +7,19 @@ public interface TweetService {
 
     TweetResponseDto postTweet(TweetRequestDto tweetRequestDto);
 
-    TweetResponseDto getTweetById();
+    TweetResponseDto getTweetById(Long id);
 
-    TweetResponseDto deleteTweetById(CredentialsDto credentialsDto);
+    TweetResponseDto deleteTweetById(Long id, CredentialsDto credentialsDto);
 
-    void likeTweetById(CredentialsDto credentialsDto);
+    void likeTweetById(Long id, CredentialsDto credentialsDto);
 
-    TweetResponseDto replyToTweetById(TweetRequestDto tweetRequestDto);
+    TweetResponseDto replyToTweetById(Long id, TweetRequestDto tweetRequestDto);
 
-    HashtagDto getTagsByTweetId();
+    HashtagDto getTagsByTweetId(Long id);
 
-    ContextDto getContextByTweetId();
+    ContextDto getContextByTweetId(Long id);
 
-    UserResponseDto getLikesByTweetId();
+    UserResponseDto getLikesByTweetId(Long id);
 
     TweetResponseDto getRepliesByTweetId();
 
@@ -27,5 +27,5 @@ public interface TweetService {
 
     UserResponseDto getMentionsByTweetId();
 
-    TweetResponseDto repostTweetById(CredentialsDto credentialsDto);
+    TweetResponseDto repostTweetById(Long id, CredentialsDto credentialsDto);
 }

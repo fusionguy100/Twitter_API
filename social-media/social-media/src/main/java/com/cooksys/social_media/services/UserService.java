@@ -12,23 +12,24 @@ public interface UserService {
 
     UserResponseDto createUser(UserRequestDto userRequestDto);
 
-    UserResponseDto getUserByUsername();
+    UserResponseDto getUserByUsername(String username);
 
-    UserResponseDto deleteUserByUsername(CredentialsDto credentialsDto);
+    UserResponseDto deleteUserByUsername(String username, CredentialsDto credentialsDto);
 
-    UserResponseDto updateUserByUsername(UserRequestDto userRequestDto);
+    UserResponseDto updateUserByUsername(String username, UserRequestDto userRequestDto);
 
-    void followUser(CredentialsDto credentialsDto);
+    void followUser(String username, CredentialsDto credentialsDto);
 
-    void unfollowUser();
+    void unfollowUser(String username, CredentialsDto credentialsDto);
 
-    TweetResponseDto getUserFeed();
+    TweetResponseDto getUserFeed(String username);
 
-    TweetResponseDto getUserTweets();
+    TweetResponseDto getUserTweets(String username);
 
-    TweetResponseDto getUserMentions();
+    TweetResponseDto getUserMentions(String username);
 
-    UserResponseDto getUserFollowers();
+    UserResponseDto getUserFollowers(String username);
 
-    UserResponseDto getUserFollowing();
+    UserResponseDto getUserFollowing(String username);
+
 }

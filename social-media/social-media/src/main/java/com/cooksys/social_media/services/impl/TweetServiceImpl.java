@@ -20,37 +20,37 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public TweetResponseDto getTweetById() {
+    public TweetResponseDto getTweetById(Long id) {
         return null;
     }
 
     @Override
-    public TweetResponseDto deleteTweetById(CredentialsDto credentialsDto) {
+    public TweetResponseDto deleteTweetById(Long id, CredentialsDto credentialsDto) {
         return null;
     }
 
     @Override
-    public void likeTweetById(CredentialsDto credentialsDto) {
+    public void likeTweetById(Long id, CredentialsDto credentialsDto) {
 
     }
 
     @Override
-    public TweetResponseDto replyToTweetById(TweetRequestDto tweetRequestDto) {
+    public TweetResponseDto replyToTweetById(Long id, TweetRequestDto tweetRequestDto) {
         return null;
     }
 
     @Override
-    public HashtagDto getTagsByTweetId() {
+    public HashtagDto getTagsByTweetId(Long id) {
         return null;
     }
 
     @Override
-    public ContextDto getContextByTweetId() {
+    public ContextDto getContextByTweetId(Long id) {
         return null;
     }
 
     @Override
-    public UserResponseDto getLikesByTweetId() {
+    public UserResponseDto getLikesByTweetId(Long id) {
         return null;
     }
 
@@ -70,7 +70,7 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public TweetResponseDto repostTweetById(CredentialsDto credentialsDto) {
+    public TweetResponseDto repostTweetById(Long id, CredentialsDto credentialsDto) {
         return null;
     }
 }
