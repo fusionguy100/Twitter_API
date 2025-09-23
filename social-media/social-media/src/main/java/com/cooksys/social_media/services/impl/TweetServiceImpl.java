@@ -65,8 +65,11 @@ public class TweetServiceImpl implements TweetService {
         tweet.setPosted(new Timestamp(System.currentTimeMillis()));
         tweet = tweetRepository.saveAndFlush(tweet);
 
-        user.getTweets().add(tweet);
-        userRepository.saveAndFlush(user);
+        if (user.getTweets() != null) {
+            user.getTweets().add(tweet);
+            userRepository.saveAndFlush(user);
+        }
+
 
         for (String mentionedUsername : extractMentions(content)) {
             User mentioned = userRepository.findByCredentialsUsernameAndDeletedIsFalse(mentionedUsername);
@@ -91,6 +94,9 @@ public class TweetServiceImpl implements TweetService {
             tag.setLastUsed(now);
             tag = hashTagRepository.save(tag);
 
+            if (tweet.getHashtags() == null) {
+                tweet.setHashtags(new HashSet<>());
+            }
             tweet.getHashtags().add(tag);
         }
         tweet = tweetRepository.saveAndFlush(tweet);
@@ -124,10 +130,9 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public TweetResponseDto getTweetById(Long id) {
-        if (!tweetRepository.existsById(id) || tweetRepository.findById(id).get().isDeleted()) {
-            throw new NotFoundException("Tweet not found");
-        }
-        return tweetMapper.entityToDto(tweetRepository.findById(id).get());
+       Tweet tweet = tweetRepository.findById(id).orElseThrow(()-> new NotFoundException("Tweet not found"));
+       if(tweet.isDeleted()) throw new NotFoundException("Tweet not found");
+       return tweetMapper.entityToDto(tweet);
     }
 
     @Override
@@ -180,10 +185,13 @@ public class TweetServiceImpl implements TweetService {
             user.setLikedTweets(new java.util.HashSet<>());
         }
 
-        if (!user.getLikedTweets().contains(tweet)) {
+        boolean alreadyLiked = user.getLikedTweets().stream()
+                .anyMatch(t -> t.getId() == tweet.getId());
+        if (!alreadyLiked) {
             user.getLikedTweets().add(tweet);
             userRepository.saveAndFlush(user);
         }
+
 
     }
 
