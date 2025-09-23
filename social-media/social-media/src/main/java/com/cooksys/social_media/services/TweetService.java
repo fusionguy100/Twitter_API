@@ -23,11 +23,11 @@ public interface TweetService {
 
     List<UserResponseDto> getLikesByTweetId(Long id);
 
-    List<TweetResponseDto> getRepliesByTweetId();
+    List<TweetResponseDto> getRepliesByTweetId(Long id);
 
-    List<TweetResponseDto> getRepostsByTweetId();
+    List<TweetResponseDto> getRepostsByTweetId(Long id);
 
-    List<UserResponseDto> getMentionsByTweetId();
+    List<UserResponseDto> getMentionsByTweetId(Long id);
 
     TweetResponseDto repostTweetById(Long id, CredentialsDto credentialsDto);
 }

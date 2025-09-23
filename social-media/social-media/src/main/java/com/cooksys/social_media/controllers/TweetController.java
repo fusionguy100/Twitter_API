@@ -67,17 +67,17 @@ public class TweetController {
     }
 
     @GetMapping("/{id}/replies")
-    public List<TweetResponseDto> getRepliesByTweetId(@PathVariable String id) {
-        return tweetService.getRepliesByTweetId();
+    public List<TweetResponseDto> getRepliesByTweetId(@PathVariable Long id) {
+        return tweetService.getRepliesByTweetId(id);
     }
 
     @GetMapping("/{id}/reposts")
-    public List<TweetResponseDto> getRepostsByTweetId(@PathVariable String id) {
-        return tweetService.getRepostsByTweetId();
+    public List<TweetResponseDto> getRepostsByTweetId(@PathVariable Long id) {
+        return tweetService.getRepostsByTweetId(id);
     }
 
     @GetMapping("/{id}/mentions")
-    public List<UserResponseDto> getMentionsByTweetId(@PathVariable String id) {
-        return tweetService.getMentionsByTweetId();
+    public List<UserResponseDto> getMentionsByTweetId(@PathVariable Long id) {
+        return tweetService.getMentionsByTweetId(id);
     }
 }
