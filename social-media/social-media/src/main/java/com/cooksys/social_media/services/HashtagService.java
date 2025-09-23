@@ -1,7 +1,10 @@
 package com.cooksys.social_media.services;
 
-public interface HashtagService {
-    String getAllTags();
+import com.cooksys.social_media.dtos.HashtagDto;
+import com.cooksys.social_media.dtos.TweetResponseDto;
 
-    String getTag(String label);
+public interface HashtagService {
+    HashtagDto getAllTags();
+
+    TweetResponseDto getTag(String label);
 }

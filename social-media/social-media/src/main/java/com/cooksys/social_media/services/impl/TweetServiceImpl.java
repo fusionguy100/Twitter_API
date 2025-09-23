@@ -1,5 +1,6 @@
 package com.cooksys.social_media.services.impl;
 
+import com.cooksys.social_media.dtos.*;
 import com.cooksys.social_media.services.TweetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -7,63 +8,69 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class TweetServiceImpl implements TweetService {
+
     @Override
-    public String getTweets() {
-        return "";
+    public TweetResponseDto getTweets() {
+        return null;
     }
 
     @Override
-    public String postTweet() {
-        return "";
+    public TweetResponseDto postTweet(TweetRequestDto tweetRequestDto) {
+        return null;
     }
 
     @Override
-    public String getTweetById() {
-        return "";
+    public TweetResponseDto getTweetById() {
+        return null;
     }
 
     @Override
-    public String deleteTweetById() {
-        return "";
+    public TweetResponseDto deleteTweetById(CredentialsDto credentialsDto) {
+        return null;
     }
 
     @Override
-    public String likeTweetById() {
-        return "";
+    public void likeTweetById(CredentialsDto credentialsDto) {
+
     }
 
     @Override
-    public String replyToTweetById() {
-        return "";
+    public TweetResponseDto replyToTweetById(TweetRequestDto tweetRequestDto) {
+        return null;
     }
 
     @Override
-    public String getTagsByTweetId() {
-        return "";
+    public HashtagDto getTagsByTweetId() {
+        return null;
     }
 
     @Override
-    public String getContextByTweetId() {
-        return "";
+    public ContextDto getContextByTweetId() {
+        return null;
     }
 
     @Override
-    public String getLikesByTweetId() {
-        return "";
+    public UserResponseDto getLikesByTweetId() {
+        return null;
     }
 
     @Override
-    public String getRepliesByTweetId() {
-        return "";
+    public TweetResponseDto getRepliesByTweetId() {
+        return null;
     }
 
     @Override
-    public String getRepostsByTweetId() {
-        return "";
+    public TweetResponseDto getRepostsByTweetId() {
+        return null;
     }
 
     @Override
-    public String getMentionsByTweetId() {
-        return "";
+    public UserResponseDto getMentionsByTweetId() {
+        return null;
+    }
+
+    @Override
+    public TweetResponseDto repostTweetById(CredentialsDto credentialsDto) {
+        return null;
     }
 }

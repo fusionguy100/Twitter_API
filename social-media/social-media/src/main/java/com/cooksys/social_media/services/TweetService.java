@@ -1,27 +1,31 @@
 package com.cooksys.social_media.services;
 
+import com.cooksys.social_media.dtos.*;
+
 public interface TweetService {
-    String getTweets();
+    TweetResponseDto getTweets();
 
-    String postTweet();
+    TweetResponseDto postTweet(TweetRequestDto tweetRequestDto);
 
-    String getTweetById();
+    TweetResponseDto getTweetById();
 
-    String deleteTweetById();
+    TweetResponseDto deleteTweetById(CredentialsDto credentialsDto);
 
-    String likeTweetById();
+    void likeTweetById(CredentialsDto credentialsDto);
 
-    String replyToTweetById();
+    TweetResponseDto replyToTweetById(TweetRequestDto tweetRequestDto);
 
-    String getTagsByTweetId();
+    HashtagDto getTagsByTweetId();
 
-    String getContextByTweetId();
+    ContextDto getContextByTweetId();
 
-    String getLikesByTweetId();
+    UserResponseDto getLikesByTweetId();
 
-    String getRepliesByTweetId();
+    TweetResponseDto getRepliesByTweetId();
 
-    String getRepostsByTweetId();
+    TweetResponseDto getRepostsByTweetId();
 
-    String getMentionsByTweetId();
+    UserResponseDto getMentionsByTweetId();
+
+    TweetResponseDto repostTweetById(CredentialsDto credentialsDto);
 }

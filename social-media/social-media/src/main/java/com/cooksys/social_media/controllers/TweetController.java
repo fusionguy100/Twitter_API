@@ -1,5 +1,6 @@
 package com.cooksys.social_media.controllers;
 
+import com.cooksys.social_media.dtos.*;
 import com.cooksys.social_media.services.TweetService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -11,62 +12,70 @@ public class TweetController {
 
     private final TweetService tweetService;
     @GetMapping
-    public String getTweets() {
+    public TweetResponseDto getTweets() {
         return tweetService.getTweets();
     }
 
     @PostMapping
-    public String postTweet() {
-        return tweetService.postTweet();
+    public TweetResponseDto postTweet(@RequestBody TweetRequestDto tweetRequestDto) {
+        return tweetService.postTweet(tweetRequestDto);
     }
 
     @GetMapping("/{id}")
-    public String getTweetById(@PathVariable String id) {
+    public TweetResponseDto getTweetById(@PathVariable String id) {
         return tweetService.getTweetById();
     }
 
     @DeleteMapping("/{id}")
-    public String deleteTweetById(@PathVariable String id) {
-        return tweetService.deleteTweetById();
+    public TweetResponseDto deleteTweetById(@PathVariable String id,
+                                            @RequestBody CredentialsDto credentialsDto) {
+        return tweetService.deleteTweetById(credentialsDto);
     }
 
     @PostMapping("/{id}/like")
-    public String likeTweetById(@PathVariable String id) {
-        return tweetService.likeTweetById();
+    public void likeTweetById(@PathVariable String id, @RequestBody CredentialsDto credentialsDto) {
+        tweetService.likeTweetById(credentialsDto);
     }
 
     @PostMapping("/{id}/reply")
-    public String replyToTweetById(@PathVariable String id) {
-        return tweetService.replyToTweetById();
+    public TweetResponseDto replyToTweetById(@PathVariable String id,
+                                   @RequestBody TweetRequestDto tweetRequestDto) {
+        return tweetService.replyToTweetById(tweetRequestDto);
+    }
+
+    @PostMapping("/{id}/repost")
+    public TweetResponseDto repostTweetById(@PathVariable String id,
+                                  @RequestBody CredentialsDto credentialsDto) {
+        return tweetService.repostTweetById(credentialsDto);
     }
 
     @GetMapping("/{id}/tags")
-    public String getTagsByTweetId(@PathVariable String id) {
+    public HashtagDto getTagsByTweetId(@PathVariable String id) {
         return tweetService.getTagsByTweetId();
     }
 
     @GetMapping("/{id}/likes")
-    public String getLikesByTweetId(@PathVariable String id) {
+    public UserResponseDto getLikesByTweetId(@PathVariable String id) {
         return tweetService.getLikesByTweetId();
     }
 
     @GetMapping("/{id}/context")
-    public String getContextByTweetId(@PathVariable String id) {
+    public ContextDto getContextByTweetId(@PathVariable String id) {
         return tweetService.getContextByTweetId();
     }
 
     @GetMapping("/{id}/replies")
-    public String getRepliesByTweetId(@PathVariable String id) {
+    public TweetResponseDto getRepliesByTweetId(@PathVariable String id) {
         return tweetService.getRepliesByTweetId();
     }
 
     @GetMapping("/{id}/reposts")
-    public String getRepostsByTweetId(@PathVariable String id) {
+    public TweetResponseDto getRepostsByTweetId(@PathVariable String id) {
         return tweetService.getRepostsByTweetId();
     }
 
     @GetMapping("/{id}/mentions")
-    public String getMentionsByTweetId(@PathVariable String id) {
+    public UserResponseDto getMentionsByTweetId(@PathVariable String id) {
         return tweetService.getMentionsByTweetId();
     }
 }

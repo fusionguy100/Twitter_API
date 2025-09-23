@@ -1,27 +1,34 @@
 package com.cooksys.social_media.services;
 
+import com.cooksys.social_media.dtos.CredentialsDto;
+import com.cooksys.social_media.dtos.TweetResponseDto;
+import com.cooksys.social_media.dtos.UserRequestDto;
+import com.cooksys.social_media.dtos.UserResponseDto;
+
+import java.util.List;
+
 public interface UserService {
-    String getAllUsers();
+    List<UserResponseDto> getAllUsers();
 
-    String createUser();
+    UserResponseDto createUser(UserRequestDto userRequestDto);
 
-    String getUserByUsername();
+    UserResponseDto getUserByUsername();
 
-    String deleteUserByUsername();
+    UserResponseDto deleteUserByUsername(CredentialsDto credentialsDto);
 
-    String updateUserByUsername();
+    UserResponseDto updateUserByUsername(UserRequestDto userRequestDto);
 
-    String followUser();
+    void followUser(CredentialsDto credentialsDto);
 
-    String unfollowUser();
+    void unfollowUser();
 
-    String getUserFeed();
+    TweetResponseDto getUserFeed();
 
-    String getUserTweets();
+    TweetResponseDto getUserTweets();
 
-    String getUserMentions();
+    TweetResponseDto getUserMentions();
 
-    String getUserFollowers();
+    UserResponseDto getUserFollowers();
 
-    String getUserFollowing();
+    UserResponseDto getUserFollowing();
 }

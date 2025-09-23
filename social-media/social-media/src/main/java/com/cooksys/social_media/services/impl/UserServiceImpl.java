@@ -1,69 +1,79 @@
 package com.cooksys.social_media.services.impl;
 
+import com.cooksys.social_media.dtos.CredentialsDto;
+import com.cooksys.social_media.dtos.TweetResponseDto;
+import com.cooksys.social_media.dtos.UserRequestDto;
+import com.cooksys.social_media.dtos.UserResponseDto;
+import com.cooksys.social_media.respositories.UserRepository;
 import com.cooksys.social_media.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
+    private final UserRepository userRepository;
+
     @Override
-    public String getAllUsers() {
-        return "";
+    public List<UserResponseDto> getAllUsers() {
+        return List.of();
     }
 
     @Override
-    public String createUser() {
-        return "";
+    public UserResponseDto createUser(UserRequestDto userRequestDto) {
+        return null;
     }
 
     @Override
-    public String getUserByUsername() {
-        return "";
+    public UserResponseDto getUserByUsername() {
+        return null;
     }
 
     @Override
-    public String deleteUserByUsername() {
-        return "";
+    public UserResponseDto deleteUserByUsername(CredentialsDto credentialsDto) {
+        return null;
     }
 
     @Override
-    public String updateUserByUsername() {
-        return "";
+    public UserResponseDto updateUserByUsername(UserRequestDto userRequestDto) {
+        return null;
     }
 
     @Override
-    public String followUser() {
-        return "";
+    public void followUser(CredentialsDto credentialsDto) {
+
     }
 
     @Override
-    public String unfollowUser() {
-        return "";
+    public void unfollowUser() {
+
     }
 
     @Override
-    public String getUserFeed() {
-        return "";
+    public TweetResponseDto getUserFeed() {
+        return null;
     }
 
     @Override
-    public String getUserTweets() {
-        return "";
+    public TweetResponseDto getUserTweets() {
+        return null;
     }
 
     @Override
-    public String getUserMentions() {
-        return "";
+    public TweetResponseDto getUserMentions() {
+        return null;
     }
 
     @Override
-    public String getUserFollowers() {
-        return "";
+    public UserResponseDto getUserFollowers() {
+        return null;
     }
 
     @Override
-    public String getUserFollowing() {
-        return "";
+    public UserResponseDto getUserFollowing() {
+        return null;
     }
 }

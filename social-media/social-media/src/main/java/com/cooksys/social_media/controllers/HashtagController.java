@@ -1,5 +1,7 @@
 package com.cooksys.social_media.controllers;
 
+import com.cooksys.social_media.dtos.HashtagDto;
+import com.cooksys.social_media.dtos.TweetResponseDto;
 import com.cooksys.social_media.services.HashtagService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,12 +17,12 @@ public class HashtagController {
     private final HashtagService hashtagService;
 
     @GetMapping
-    public String getAllTags() {
+    public HashtagDto getAllTags() {
         return hashtagService.getAllTags();
     }
 
     @GetMapping("/{label}")
-    public String getTag(@PathVariable String label) {
+    public TweetResponseDto getTag(@PathVariable String label) {
         return hashtagService.getTag(label);
     }
 
