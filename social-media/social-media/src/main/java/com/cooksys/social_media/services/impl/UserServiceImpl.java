@@ -1,18 +1,24 @@
 package com.cooksys.social_media.services.impl;
 
 import com.cooksys.social_media.dtos.*;
+import com.cooksys.social_media.entities.Tweet;
 import com.cooksys.social_media.entities.User;
 import com.cooksys.social_media.exceptions.BadRequestException;
 import com.cooksys.social_media.exceptions.NotAuthorizedException;
 import com.cooksys.social_media.exceptions.NotFoundException;
 import com.cooksys.social_media.mappers.ProfileMapper;
+import com.cooksys.social_media.mappers.TweetMapper;
 import com.cooksys.social_media.mappers.UserMapper;
+import com.cooksys.social_media.respositories.TweetRepository;
 import com.cooksys.social_media.respositories.UserRepository;
 import com.cooksys.social_media.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +27,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProfileMapper profileMapper;
+    private final TweetRepository tweetRepository;
+    private final TweetMapper tweetMapper;
 
     @Override
     public List<UserResponseDto> getAllUsers() {
@@ -139,7 +147,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<TweetResponseDto> getUserFeed(String username) {
-        return null;
+        if (!userRepository.existsByCredentialsUsernameAndDeletedIsFalse(username)) {
+            throw new NotFoundException("User not found");
+        }
+        User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
+        return tweetMapper.entitiesToDtos(
+    (Stream.concat(
+                user.getTweets().stream(),
+                user.getFollowing().stream().flatMap(u -> u.getTweets().stream())
+        ).filter(t -> !t.isDeleted())
+                .sorted((t1, t2) -> t2.getPosted().compareTo(t1.getPosted()))
+                .toList()));
+
     }
 
     @Override
@@ -148,13 +167,18 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("User not found");
         }
         User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
-
-        return null;
+        return tweetMapper.entitiesToDtos(user.getTweets().stream().filter(t -> !t.isDeleted())
+                .sorted((t1, t2) -> t2.getPosted().compareTo(t1.getPosted()))
+                .toList());
     }
 
     @Override
     public List<TweetResponseDto> getUserMentions(String username) {
-        return null;
+        if (!userRepository.existsByCredentialsUsernameAndDeletedIsFalse(username)) {
+            throw new NotFoundException("User not found");
+        }
+        User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
+        return tweetMapper.entitiesToDtos(user.getMentionedIn().stream().filter(t -> !t.isDeleted()).toList());
     }
 
     @Override
