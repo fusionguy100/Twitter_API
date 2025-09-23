@@ -2,7 +2,9 @@ package com.cooksys.social_media.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
@@ -11,6 +13,8 @@ import java.util.Set;
 @Entity
 @Data
 @NoArgsConstructor
+@EqualsAndHashCode(exclude={"author", "likedBy", "mentions", "inReplyTo", "replies", "repostOf", "reposts", "hashtags"})
+@ToString(exclude={"author", "likedBy", "mentions", "inReplyTo", "replies", "repostOf", "reposts", "hashtags"})
 public class Tweet {
     @Id
     @GeneratedValue
@@ -41,11 +45,11 @@ public class Tweet {
     private Set<Tweet> replies;
 
     @ManyToOne
-    @JoinColumn(name="rePostOf")
-    private Tweet rePostOf;
+    @JoinColumn(name="repostOf")
+    private Tweet repostOf;
 
-    @OneToMany(mappedBy = "rePostOf")
-    private Set<Tweet> rePosts;
+    @OneToMany(mappedBy = "repostOf")
+    private Set<Tweet> reposts;
 
     @ManyToMany
     @JoinTable(

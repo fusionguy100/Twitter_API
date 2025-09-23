@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +35,11 @@ public class HashtagServiceImpl implements HashtagService {
             throw new NotFoundException("Hashtag with label " + label + " not found");
         }
 
-        Hashtag hashtag = hashTagRepository.findByLabel(label);
+        Optional<Hashtag> optionalHashtag = hashTagRepository.findByLabelIgnoreCase(label);
+        if (optionalHashtag == null) {
+            throw new NotFoundException("Hashtag with label " + label + " not found");
+        }
+        Hashtag hashtag = optionalHashtag.get();
         return tweetMapper.entitiesToDtos(hashtag.getTweets().stream()
                 .filter(tweet -> !tweet.isDeleted())
                 .sorted((t1, t2) -> t2.getPosted().compareTo(t1.getPosted()))

@@ -15,6 +15,7 @@ import com.cooksys.social_media.respositories.TweetRepository;
 import com.cooksys.social_media.respositories.UserRepository;
 import com.cooksys.social_media.services.TweetService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
@@ -22,6 +23,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TweetServiceImpl implements TweetService {
@@ -78,11 +80,14 @@ public class TweetServiceImpl implements TweetService {
 
        // Process hashtags
         Timestamp now = new Timestamp(System.currentTimeMillis());
+        if (tweet.getHashtags() == null) {
+            tweet.setHashtags(new java.util.HashSet<>());
+        }
         for (String label : extractHashtags(content)) {
             Hashtag tag = hashTagRepository.findByLabelIgnoreCase(label)
                     .orElseGet(() -> {
                         Hashtag hashtag = new Hashtag();
-                        hashtag.setLabel(label.toLowerCase()); // normalize to lowercase
+                        hashtag.setLabel(label); // normalize to lowercase
                         hashtag.setFirstUsed(now);
                         hashtag.setLastUsed(now);
                         return hashtag;
@@ -116,7 +121,8 @@ public class TweetServiceImpl implements TweetService {
         Set<String> hashtags = new HashSet<>();
         Matcher matcher = HASHTAG_PATTERN.matcher(text);
         while (matcher.find()) {
-            hashtags.add(matcher.group(1).toLowerCase()); // normalize label
+//            hashtags.add(matcher.group(1).toLowerCase()); // normalize label
+            hashtags.add(matcher.group(1));
         }
         return hashtags;
     }
@@ -339,11 +345,12 @@ public class TweetServiceImpl implements TweetService {
                 .filter(t -> !t.isDeleted())
                 .orElseThrow(() -> new NotFoundException("Tweet not found"));
         List<TweetResponseDto> reposts = new ArrayList<>();
-        for(Tweet t: tweet.getRePosts()) {
+        for(Tweet t: tweet.getReposts()) {
             if(!t.isDeleted()) {
                 reposts.add(tweetMapper.entityToDto(t));
             }
         }
+
         return reposts;
 
     }
@@ -391,7 +398,7 @@ public class TweetServiceImpl implements TweetService {
 
         repost.setAuthor(user);
         repost.setPosted(new Timestamp(System.currentTimeMillis()));
-        repost.setRePostOf(original);
+        repost.setRepostOf(original);
         repost.setContent(null);
 
         repost = tweetRepository.saveAndFlush(repost);

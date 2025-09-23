@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final ProfileMapper profileMapper;
-    private final TweetRepository tweetRepository;
     private final TweetMapper tweetMapper;
 
     @Override
@@ -63,7 +62,6 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.save(userMapper.dtoToEntity(userRequestDto));
 
         return userMapper.entityToDto(user);
-//        return userMapper.entityToDto(userRepository.save(userMapper.dtoToEntity(userRequestDto)));
     }
 
     @Override
@@ -121,9 +119,6 @@ public class UserServiceImpl implements UserService {
     public void followUser(String username, CredentialsDto credentialsDto) {
         User user = userRepository.findByCredentialsUsernameAndCredentialsPassword(credentialsDto.getUsername(),
                 credentialsDto.getPassword());
-//        log.info("Credentials: " + credentialsDto);
-//        log.info("User to follow: " + username);
-//        log.info("Current user: " + user);
         if (user == null) {
             throw new NotAuthorizedException("Invalid credentials");
         }
@@ -134,10 +129,8 @@ public class UserServiceImpl implements UserService {
         if (user.getFollowing().contains(userToFollow) || user.getCredentials().getUsername().equals(username)) {
             throw new BadRequestException("You are already following this user or trying to follow yourself");
         }
-//        log.info(username + " follows " + user.getFollowing());
         user.getFollowing().add(userToFollow);
-//        userToFollow.getFollowers().add(user);
-        log.info("Saved User after following" + userRepository.saveAndFlush(user));
+        userRepository.saveAndFlush(user);
     }
 
     @Override
@@ -155,7 +148,6 @@ public class UserServiceImpl implements UserService {
             throw new BadRequestException("You are not following this user or trying to unfollow yourself");
         }
         user.getFollowing().remove(userToUnfollow);
-//        userToUnfollow.getFollowers().remove(user);
         userRepository.saveAndFlush(user);
     }
 
@@ -165,6 +157,13 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("User not found");
         }
         User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
+        log.info("User's tweets: " +
+                user.getTweets().stream().toList());
+        log.info("Following's tweets: " +
+                user.getFollowing().stream().flatMap(u -> u.getTweets().stream()).toList());
+        log.info("total tweets: " + Stream.concat(
+                user.getTweets().stream(),
+                user.getFollowing().stream().flatMap(u -> u.getTweets().stream())).toList());
         return tweetMapper.entitiesToDtos(
     (Stream.concat(
                 user.getTweets().stream(),
