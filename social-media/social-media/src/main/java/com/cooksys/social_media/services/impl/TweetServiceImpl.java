@@ -5,12 +5,14 @@ import com.cooksys.social_media.services.TweetService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TweetServiceImpl implements TweetService {
 
     @Override
-    public TweetResponseDto getTweets() {
+    public List<TweetResponseDto> getTweets() {
         return null;
     }
 
@@ -40,7 +42,7 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public HashtagDto getTagsByTweetId(Long id) {
+    public List<HashtagDto> getTagsByTweetId(Long id) {
         return null;
     }
 
@@ -50,22 +52,22 @@ public class TweetServiceImpl implements TweetService {
     }
 
     @Override
-    public UserResponseDto getLikesByTweetId(Long id) {
+    public List<UserResponseDto> getLikesByTweetId(Long id) {
         return null;
     }
 
     @Override
-    public TweetResponseDto getRepliesByTweetId() {
+    public List<TweetResponseDto> getRepliesByTweetId() {
         return null;
     }
 
     @Override
-    public TweetResponseDto getRepostsByTweetId() {
+    public List<TweetResponseDto> getRepostsByTweetId() {
         return null;
     }
 
     @Override
-    public UserResponseDto getMentionsByTweetId() {
+    public List<UserResponseDto> getMentionsByTweetId() {
         return null;
     }
 

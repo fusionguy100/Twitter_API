@@ -3,8 +3,10 @@ package com.cooksys.social_media.services;
 import com.cooksys.social_media.dtos.HashtagDto;
 import com.cooksys.social_media.dtos.TweetResponseDto;
 
-public interface HashtagService {
-    HashtagDto getAllTags();
+import java.util.List;
 
-    TweetResponseDto getTag(String label);
+public interface HashtagService {
+    List<HashtagDto> getAllTags();
+
+    List<TweetResponseDto> getTag(String label);
 }

@@ -2,8 +2,10 @@ package com.cooksys.social_media.services;
 
 import com.cooksys.social_media.dtos.*;
 
+import java.util.List;
+
 public interface TweetService {
-    TweetResponseDto getTweets();
+    List<TweetResponseDto> getTweets();
 
     TweetResponseDto postTweet(TweetRequestDto tweetRequestDto);
 
@@ -15,17 +17,17 @@ public interface TweetService {
 
     TweetResponseDto replyToTweetById(Long id, TweetRequestDto tweetRequestDto);
 
-    HashtagDto getTagsByTweetId(Long id);
+    List<HashtagDto> getTagsByTweetId(Long id);
 
     ContextDto getContextByTweetId(Long id);
 
-    UserResponseDto getLikesByTweetId(Long id);
+    List<UserResponseDto> getLikesByTweetId(Long id);
 
-    TweetResponseDto getRepliesByTweetId();
+    List<TweetResponseDto> getRepliesByTweetId();
 
-    TweetResponseDto getRepostsByTweetId();
+    List<TweetResponseDto> getRepostsByTweetId();
 
-    UserResponseDto getMentionsByTweetId();
+    List<UserResponseDto> getMentionsByTweetId();
 
     TweetResponseDto repostTweetById(Long id, CredentialsDto credentialsDto);
 }

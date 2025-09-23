@@ -6,17 +6,19 @@ import com.cooksys.social_media.services.HashtagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class HashtagServiceImpl implements HashtagService {
 
     @Override
-    public HashtagDto getAllTags() {
+    public List<HashtagDto> getAllTags() {
         return null;
     }
 
     @Override
-    public TweetResponseDto getTag(String label) {
+    public List<TweetResponseDto> getTag(String label) {
         return null;
     }
 }

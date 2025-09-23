@@ -5,6 +5,8 @@ import com.cooksys.social_media.services.TweetService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/tweets")
@@ -12,7 +14,7 @@ public class TweetController {
 
     private final TweetService tweetService;
     @GetMapping
-    public TweetResponseDto getTweets() {
+    public List<TweetResponseDto> getTweets() {
         return tweetService.getTweets();
     }
 
@@ -50,12 +52,12 @@ public class TweetController {
     }
 
     @GetMapping("/{id}/tags")
-    public HashtagDto getTagsByTweetId(@PathVariable Long id) {
+    public List<HashtagDto> getTagsByTweetId(@PathVariable Long id) {
         return tweetService.getTagsByTweetId(id);
     }
 
     @GetMapping("/{id}/likes")
-    public UserResponseDto getLikesByTweetId(@PathVariable Long id) {
+    public List<UserResponseDto> getLikesByTweetId(@PathVariable Long id) {
         return tweetService.getLikesByTweetId(id);
     }
 
@@ -65,17 +67,17 @@ public class TweetController {
     }
 
     @GetMapping("/{id}/replies")
-    public TweetResponseDto getRepliesByTweetId(@PathVariable String id) {
+    public List<TweetResponseDto> getRepliesByTweetId(@PathVariable String id) {
         return tweetService.getRepliesByTweetId();
     }
 
     @GetMapping("/{id}/reposts")
-    public TweetResponseDto getRepostsByTweetId(@PathVariable String id) {
+    public List<TweetResponseDto> getRepostsByTweetId(@PathVariable String id) {
         return tweetService.getRepostsByTweetId();
     }
 
     @GetMapping("/{id}/mentions")
-    public UserResponseDto getMentionsByTweetId(@PathVariable String id) {
+    public List<UserResponseDto> getMentionsByTweetId(@PathVariable String id) {
         return tweetService.getMentionsByTweetId();
     }
 }
