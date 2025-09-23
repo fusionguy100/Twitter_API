@@ -20,4 +20,13 @@ public class ValidateController {
 
     }
 
+    @GetMapping("/username/exists/@{username}")
+    public ResponseEntity<Boolean> validateUsernameExists(@PathVariable String username) {
+        return ResponseEntity.ok(validateService.validateUsernameExists(username));
+    }
+
+    @GetMapping("/username/available/@{username}")
+    public ResponseEntity<Boolean> validateUsernameAvailable(@PathVariable String username) {
+        return ResponseEntity.ok(validateService.validateUsernameAvailable(username));
+    }
 }
