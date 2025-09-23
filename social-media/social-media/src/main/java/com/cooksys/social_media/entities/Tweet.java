@@ -3,6 +3,7 @@ package com.cooksys.social_media.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 import java.util.Set;
@@ -15,6 +16,8 @@ public class Tweet {
     @GeneratedValue
     private long id;
 
+    @CreationTimestamp
+    @Column(updatable = false)
     private Timestamp posted;
 
     private String content;
