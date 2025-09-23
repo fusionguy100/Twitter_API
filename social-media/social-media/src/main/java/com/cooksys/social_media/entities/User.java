@@ -26,15 +26,16 @@ public class User {
     private boolean deleted = false;
     private Timestamp joined;
 
-    @ManyToMany
+    @ManyToMany //user THIS user follows, owning side; writes followers_following roles)
     @JoinTable(
             name="followers_following",
-            joinColumns = @JoinColumn(name="follower_id"),
-            inverseJoinColumns = @JoinColumn(name="following_id")
+            joinColumns = @JoinColumn(name="follower_id"), // this users id
+            inverseJoinColumns = @JoinColumn(name="following_id") // others id
     )
-    private Set<User> followers;
-    @ManyToMany(mappedBy = "followers")
     private Set<User> following;
+
+    @ManyToMany(mappedBy = "following") // users who follow this user
+    private Set<User> followers;
 
     @OneToMany(mappedBy = "author")
     private List<Tweet> tweets;
