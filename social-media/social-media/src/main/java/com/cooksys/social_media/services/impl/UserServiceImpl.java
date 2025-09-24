@@ -157,13 +157,6 @@ public class UserServiceImpl implements UserService {
             throw new NotFoundException("User not found");
         }
         User user = userRepository.findByCredentialsUsernameAndDeletedIsFalse(username);
-        log.info("User's tweets: " +
-                user.getTweets().stream().toList());
-        log.info("Following's tweets: " +
-                user.getFollowing().stream().flatMap(u -> u.getTweets().stream()).toList());
-        log.info("total tweets: " + Stream.concat(
-                user.getTweets().stream(),
-                user.getFollowing().stream().flatMap(u -> u.getTweets().stream())).toList());
         return tweetMapper.entitiesToDtos(
     (Stream.concat(
                 user.getTweets().stream(),

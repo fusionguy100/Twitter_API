@@ -31,12 +31,12 @@ public class HashtagServiceImpl implements HashtagService {
 
     @Override
     public List<TweetResponseDto> getTag(String label) {
-        if (!hashTagRepository.existsByLabel(label)) {
-            throw new NotFoundException("Hashtag with label " + label + " not found");
-        }
+//        if (!hashTagRepository.existsByLabel(label)) {
+//            throw new NotFoundException("Hashtag with label " + label + " not found");
+//        }
 
         Optional<Hashtag> optionalHashtag = hashTagRepository.findByLabelIgnoreCase(label);
-        if (optionalHashtag == null) {
+        if (optionalHashtag.isEmpty()) {
             throw new NotFoundException("Hashtag with label " + label + " not found");
         }
         Hashtag hashtag = optionalHashtag.get();
