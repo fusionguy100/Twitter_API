@@ -7,7 +7,7 @@ It emphasizes clean architecture, DTO mapping, robust entity relationships, and 
 
 ---
 
-## 🚀 Features
+##  Features
 
 -  **User Management**  
   - Create, view, update, and soft-delete users.  
